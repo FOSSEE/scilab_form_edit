@@ -1,0 +1,5 @@
+name = Form Edit
+description = IIT Bombay Textbook Companion project proposal form edit
+package = IITB
+version = VERSION
+core = 6.x

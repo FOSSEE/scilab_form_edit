@@ -1,0 +1,114 @@
+<?php 
+ function form_edit_menu() {
+        $items = array();
+        
+    /*$items['form_edit'] = array(
+    'title' => 'Edit Book Proposals',
+    'description' => 'Edit Book Proposals',
+    'page callback' => '_proposal_pending',
+    'access callback' => 'user_access',
+    'access arguments' => array('approve book proposal'),
+    'file' => 'form_edit.inc',
+  );
+  $items['form_edit/pending'] = array(
+    'title' => 'Completed Proposals',
+    'description' => 'Completed Proposals Queue',
+    'page callback' => '_proposal_pending',
+    'access callback' => 'user_access',
+    'access arguments' => array('approve book proposal'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 1,
+    'file' => 'form_edit.inc',
+  );*/
+  $items['form_edit/tbc/all'] = array(
+    'title' => 'All completed Proposals',
+    'description' => 'All completed Proposals',
+    'page callback' => '_completed_proposal_all',
+    'access callback' => 'user_access',
+    'access arguments' => array('edit completed book proposal'),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 2,
+    'file' => 'form_edit.inc',
+  );
+  $items['form_edit/lm/all'] = array(
+    'title' => 'All completed Lab Proposals',
+    'description' => 'All completed Lab Proposals',
+    'page callback' => '_completed_lab_proposal_all',
+    'access callback' => 'user_access',
+    'access arguments' => array('edit completed lab proposal'),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 2,
+    'file' => 'form_edit.inc',
+  );
+ /* $items['form_edit/category'] = array(
+    'title' => 'Categorize',
+    'description' => 'Categorize Books',
+    'page callback' => '_category_all',
+    'access callback' => 'user_access',
+    'access arguments' => array('approve book proposal'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+    'file' => 'form_edit.inc',
+  );
+  $items['form_edit/failed'] = array(
+    'title' => 'Failed Proposals',
+    'description' => 'Failed to submit code',
+    'page callback' => '_failed_all',
+    'access callback' => 'user_access',
+    'access arguments' => array('approve book proposal'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 3,
+    'file' => 'form_edit.inc',
+  );
+  $items['form_edit/approve'] = array(
+    'title' => 'Proposal Approval',
+    'description' => 'Proposal Approval',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('proposal_approval_form'),
+    'access arguments' => array('approve book proposal'),
+    'type' => MENU_CALLBACK,
+    'file' => 'form_edit.inc',
+  );
+  $items['form_edit/status'] = array(
+    'title' => 'Proposal Status',
+    'description' => 'Proposal Status',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('proposal_status_form'),
+    'access arguments' => array('approve book proposal'),
+    'type' => MENU_CALLBACK,
+    'file' => 'form_edit.inc',
+  );*/
+  $items['form_edit/tbc/edit'] = array(
+    'title' => 'Edit Proposal',
+    'description' => 'Edit Proposal',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('proposal_edit_form'),
+    'access arguments' => array('edit completed book proposal'),
+    'type' => MENU_CALLBACK,
+    'file' => 'form_edit.inc',
+  );
+  $items['form_edit/lm/edit'] = array(
+    'title' => 'Edit Lab Proposal',
+    'description' => 'Edit Lab Proposal',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_completed_lab_proposal_edit_form'),
+    'access arguments' => array('edit completed lab proposal'),
+    'type' => MENU_CALLBACK,
+    'file' => 'form_edit.inc',
+  );
+  /*$items['form_edit/category/edit'] = array(
+    'title' => 'Edit Category',
+    'description' => 'Edit category',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('category_edit_form'),
+    'access arguments' => array('edit book proposal'),
+    'type' => MENU_CALLBACK,
+    'file' => 'form_edit.inc',
+  );*/
+        
+        return $items;
+    
+    }
+    function form_edit_perm() {
+  return array('edit completed book proposal','edit completed lab proposal');
+}
