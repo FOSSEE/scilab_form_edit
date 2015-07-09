@@ -595,7 +595,7 @@ function proposal_edit_form_submit($form, &$form_state)
   drupal_set_message(t('Proposal Updated'), 'status');
 }
 
-
+/*
 function textbook_companion_path() {
   return $_SERVER['DOCUMENT_ROOT'] . base_path() . 'uploads/';
 }
@@ -608,7 +608,7 @@ function del_book_pdf($book_id)
   if (file_exists($dir_path . $pdf_filename))
     unlink($dir_path . $pdf_filename);
 }
-
+*/
 /******************************************************************************************************************/
 function _completed_lab_proposal_all()
 {
