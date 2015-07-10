@@ -179,7 +179,7 @@ function proposal_edit_form($form_state,$nonaicte_book)
  
   $form['all_state'] = array(
     '#type' => 'select',    
-    '#title' => t('States'),
+    '#title' => t('State'),
     '#options' => array(
     				 '0' => 'Please select...',
 					 'Andhra Pradesh' => t('Andhra Pradesh'),
@@ -224,6 +224,14 @@ function proposal_edit_form($form_state,$nonaicte_book)
     '#tree' => TRUE,
     '#validated' => TRUE,
     '#default_value' => $proposal_data->state,
+  );
+  $form['pincode'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Pincode'),
+    '#size' => 6,
+    '#maxlength' => 6,
+    '#required' => TRUE,
+    '#default_value' => $proposal_data->pincode,
   );
   $form['faculty'] = array(
     '#type' => 'textfield',
@@ -454,7 +462,8 @@ function proposal_edit_form_validate($form, &$form_state, &$nonaicte_book)
     form_set_error('all_state', t('You must select a state.'));
   }
 
-  
+  if(!preg_match("/^[1-9]{1}[0-9]{5}$/", $form_state['values']['pincode']))
+  form_set_error('pincode', t('Invalid pincode'));
    
 
   /* mobile */
@@ -523,7 +532,7 @@ function proposal_edit_form_submit($form, &$form_state)
   $proposal_id = $form_state['values']['hidden_proposal_id'];
 
   
-  $query = "UPDATE {textbook_companion_proposal} SET full_name = '".$form_state['values']['full_name']."', mobile = '".$form_state['values']['mobile']."', how_project = '".$form_state['values']['how_project']."', course = '".$form_state['values']['course']."', branch = '".$form_state['values']['branch']."', university = '".$form_state['values']['university']."', city = '".$form_state['values']['city']."', state = '". $form_state['values']['all_state'] ."', faculty = '".$form_state['values']['faculty']."', reviewer = '".$form_state['values']['reviewer']."', completion_date = $completion_date_timestamp, operating_system= '".$form_state['values']['operating_system']."', scilab_version= '".$form_state['values']['scilab_version']."' WHERE id =".$proposal_id;
+  $query = "UPDATE {textbook_companion_proposal} SET full_name = '".$form_state['values']['full_name']."', mobile = '".$form_state['values']['mobile']."', how_project = '".$form_state['values']['how_project']."', course = '".$form_state['values']['course']."', branch = '".$form_state['values']['branch']."', university = '".$form_state['values']['university']."', city = '".$form_state['values']['city']."', state = '". $form_state['values']['all_state'] ."', pincode = ".$form_state['values']['pincode'].", faculty = '".$form_state['values']['faculty']."', reviewer = '".$form_state['values']['reviewer']."', completion_date = $completion_date_timestamp, operating_system= '".$form_state['values']['operating_system']."', scilab_version= '".$form_state['values']['scilab_version']."' WHERE id =".$proposal_id;
 
 
   db_query($query);
@@ -731,7 +740,7 @@ function _completed_lab_proposal_edit_form($form_state)
  
   $form['all_state'] = array(
     '#type' => 'select',    
-    '#title' => t('States'),
+    '#title' => t('State'),
     '#options' => array(
     				 '0' => 'Please select...',
 					 'Andhra Pradesh' => t('Andhra Pradesh'),
@@ -776,6 +785,14 @@ function _completed_lab_proposal_edit_form($form_state)
     '#tree' => TRUE,
     '#validated' => TRUE,
     '#default_value' => $proposal_data->state,
+  );
+  $form['pincode'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Pincode'),
+    '#size' => 6,
+    '#maxlength' => 6,
+    '#required' => TRUE,
+    '#default_value' => $proposal_data->pincode,
   );
   $form['lab_title'] = array(
     '#type' => 'textfield',
@@ -870,6 +887,8 @@ function _completed_lab_proposal_edit_form_validate($form, &$form_state)
   if (($form_state['values']['all_state'] === '') || ($form_state['values']['all_state'] === 0)) {
     form_set_error('all_state', t('You must select a state.'));
   }
+   if(!preg_match("/^[1-9]{1}[0-9]{5}$/", $form_state['values']['pincode']))
+  form_set_error('pincode', t('Invalid pincode'));
 
   /* check before delete proposal */
   if ($form_state['values']['delete_proposal'] == 1) {
@@ -928,14 +947,15 @@ function _completed_lab_proposal_edit_form_submit($form, &$form_state)
   }
 
   /* update proposal */
-  $result = db_query("UPDATE {lab_migration_proposal} SET name_title = '%s', name = '%s', contact_ph = '%s', department = '%s', university = '%s', city = '%s', state = '%s', lab_title = '%s', solution_display = %d WHERE id = %d",
+  $result = db_query("UPDATE {lab_migration_proposal} SET name_title = '%s', name = '%s', contact_ph = '%s', department = '%s', university = '%s', city = '%s', state = '%s', pincode = %d, lab_title = '%s', solution_display = %d WHERE id = %d",
     $form_state['values']['name_title'],
     $form_state['values']['name'],
     $form_state['values']['contact_ph'],
     $form_state['values']['department'],
     $form_state['values']['university'],
     $form_state['values']['city'],
-    $form_state['values']['all_state'],    
+    $form_state['values']['all_state'],
+    $form_state['values']['pincode'],    
     $form_state['values']['lab_title'],
     $solution_display,
     $proposal_id);
