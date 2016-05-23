@@ -1004,3 +1004,70 @@ function _completed_lab_proposal_edit_form_submit($form, &$form_state)
 		
 		drupal_set_message(t('Proposal Updated'), 'status');
 }
+// used to add new city in databse
+function add_new_city_form($form,&$from_state)
+{
+		$form['new_city_name'] = array(
+				'#type' => 'textfield',
+				'#title' => t('Enter New City'),
+				'#size' => 50,
+				'#description' => t('Enter new city name in first letter in uppercase. Example - Mumbai'),
+				'#maxlength' => 30,
+				'#required' => False,
+				'#attributes' => array(
+						'placeholder' => 'Enter new city name in ....'
+				),
+		);
+		$form['submit'] = array(
+				'#type' => 'submit',
+				'#value' => t('Submit')
+		);
+		$form['cancel'] = array(
+				'#markup' => l(t('Cancel'), '')
+		);
+		return $form;
+}
+function add_new_city_form_validate($form,&$form_state)
+{
+	$new_city_name = $form_state['values']['new_city_name'];
+	if (!preg_match("/^[a-zA-Z ]*$/", $new_city_name))
+	{
+				form_set_error('new_city_name', t('Only letters are allowed'));
+	}
+	$form_state['values']['new_city_name'] = nameize($new_city_name);
+	return;
+}
+function add_new_city_form_submit($form,&$form_state)
+{
+	if($form_state['values']['new_city_name'])
+	{
+		$query = "SELECT city FROM list_cities_of_india WHERE city = :city";
+		$args = array(":city" => $form_state['values']['new_city_name']);
+		$result = db_query($query,$args)->fetchObject();
+		if(!$result)
+		{
+			db_query("INSERT INTO {list_cities_of_india} (city) VALUES (:city)",array(":city" => $form_state['values']['new_city_name']));
+			drupal_set_message("City has been added in database");
+		} else
+		{
+		drupal_set_message("City already present in database","error");
+		}
+	}
+}
+function nameize($str,$a_char = array("'","-"," ")){
+	$string = strtolower($str);
+	foreach ($a_char as $temp){
+		$pos = strpos($string,$temp);
+		if ($pos){
+			//we are in the loop because we found one of the special characters in the array, so lets split it up into chunks and capitalize each one.
+			$mend = '';
+			$a_split = explode($temp,$string);
+			foreach ($a_split as $temp2){
+				//capitalize each portion of the string which was separated at a special character
+				$mend .= ucfirst($temp2).$temp;
+				}
+			$string = substr($mend,0,-1);
+			}
+		}
+	return ucfirst($string);
+}
