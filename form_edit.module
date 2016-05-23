@@ -3,6 +3,20 @@ function form_edit_menu()
 {
 		$items = array();
 
+		$items['form_edit/add/city'] = array(
+				'title' => 'Add new city in databse',
+				'description' => 'Add new city in databse',
+				'page callback' => 'drupal_get_form',
+				'page arguments' => array(
+						'add_new_city_form'
+				),
+				'access arguments' => array(
+						'edit completed book proposal'
+				),
+				'type' => MENU_NORMAL_ITEM,
+				'weight' => 2,
+				'file' => 'form_edit.inc'
+		);
 		$items['form_edit/tbc/all'] = array(
 				'title' => 'All completed Proposals',
 				'description' => 'All completed Proposals',
